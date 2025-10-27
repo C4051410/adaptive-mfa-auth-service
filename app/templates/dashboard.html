@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2>Welcome, {{ username }}</h2>
+<p>This is your protected dashboard area.</p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+<p style="color: {{ 'green' if category == 'success' else 'red' if category == 'error' else 'blue' }};">
+    {{ message }}
+</p>
+{% endfor %}
+{% endwith %}
+
+<p><a href="{{ url_for('main.logout') }}">Secure Logout</a></p>
+{% endblock %}

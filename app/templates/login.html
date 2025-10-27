@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Login - Secure Auth{% endblock %}
+{% block content %}
+<h2>Secure Login</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+<p style="color: {{ 'green' if category == 'success' else 'red' if category == 'error' else 'blue' }};">
+    {{ message }}
+</p>
+{% endfor %}
+{% endwith %}
+
+{% if lockout_status %}
+    <p style="color:red;">**Account is currently locked. Please wait.**</p>
+{% else %}
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }} <p>
+            {{ form.username.label }}:<br>
+            {{ form.username(size=30) }}
+        </p>
+        <p>
+            {{ form.password.label }}:<br>
+            {{ form.password(size=30) }}
+        </p>
+        
+        {% if captcha_status %}
+        <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+            <legend>CAPTCHA Challenge</legend>
+            <p style="font-size: 24px; font-weight: bold; background-color: #eee; padding: 5px; letter-spacing: 5px;">
+                {{ captcha_text }}
+            </p>
+            <p>
+                {{ captcha_form.captcha_input.label }}:<br>
+                {{ captcha_form.captcha_input(size=30) }}
+            </p>
+        </fieldset>
+        {% endif %}
+        
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endif %}
+
+{% endblock %}

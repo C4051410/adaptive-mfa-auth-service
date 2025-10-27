@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Verify MFA{% endblock %}
+{% block content %}
+<h2>Multi-Factor Authentication Required</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+<p style="color: {{ 'green' if category == 'success' else 'red' if category == 'error' else 'blue' }};">
+    {{ message }}
+</p>
+{% endfor %}
+{% endwith %}
+
+<p>Please open your authenticator app (e.g., Google or Microsoft Authenticator) and enter the 6-digit code.</p>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }} <p>
+        {{ form.totp.label }}:<br>
+        {{ form.totp(size=6) }}
+    </p>
+
+    <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}

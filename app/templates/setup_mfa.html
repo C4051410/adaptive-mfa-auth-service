@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Setup MFA{% endblock %}
+{% block content %}
+<h2>Multi-Factor Authentication Setup</h2>
+
+<p>To enable secure multi-factor authentication, please follow these steps:</p>
+
+<ol>
+    <li>Install an authenticator app (e.g., Google or Microsoft Authenticator) on your mobile device.</li>
+    <li>Scan the QR code below or manually enter the secret key into the app.</li>
+    <li>Once added, the app will generate 6-digit codes that change every 30 seconds.</li>
+</ol>
+
+<img src="{{ qr_data_url }}" alt="MFA QR Code">
+
+<p>
+    <strong>Manual Entry Key:</strong> <code>{{ secret }}</code>
+</p>
+
+<p>
+    <a href="{{ url_for('main.dashboard') }}" style="color: green;">I have set up my authenticator app and can generate codes.</a>
+</p>
+
+{% endblock %}
