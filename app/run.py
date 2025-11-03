@@ -7,12 +7,12 @@ with app.app_context():
     db.create_all()
 
     if User.query.count() == 0:
-        # Default users
+
         admin = User(username='admin')
         user1 = User(username='user1')
         user2 = User(username='user2')
 
-        # Use the set_password method to hash the passwords
+        #Hash pre-defined users passwords
         admin.set_password('admin123')
         user1.set_password('letmein')
         user2.set_password('welcome123')

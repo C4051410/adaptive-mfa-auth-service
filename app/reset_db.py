@@ -2,7 +2,7 @@ import os
 from app import create_app, db
 from app.models import User
 
-# Adjusted path to find the database in the 'instance' folder created by Flask
+
 db_path = os.path.join(os.getcwd(), 'instance', 'users.db')
 
 if os.path.exists(db_path):
@@ -15,12 +15,12 @@ with app.app_context():
     db.create_all()
 
     if User.query.count() == 0:
-        # Default users
+        #pre initialised users
         admin = User(username='admin')
         user1 = User(username='user1')
         user2 = User(username='user2')
 
-        # Use the set_password method to hash the passwords
+        #hash pre initialised users, passwords
         admin.set_password('admin123')
         user1.set_password('letmein')
         user2.set_password('welcome123')

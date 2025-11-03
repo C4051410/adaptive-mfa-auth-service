@@ -8,7 +8,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from config import Config
 
-# Initialize Extensions
+#Initialised extensions, used AI to use correct extensions
 db = SQLAlchemy()
 login_manager = LoginManager()
 csrf = CSRFProtect()
@@ -19,50 +19,45 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # Initialize extensions with the app
+    #Initialised extensions for app, used AI to use correct extensions
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
     limiter.init_app(app)
 
-    # Configure Flask-Login
+    #Set up flask login
     login_manager.login_view = 'main.login'
     login_manager.login_message_category = 'info'
 
-    # Register Blueprints
+    #initialise blueprints
     from .routes import main
     app.register_blueprint(main)
 
-    # User loader for Flask-Login
-    from .models import User  # Import here to avoid circular dependencies
+    #Loader for user for flask login
+    from .models import User
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    # --- Secure Session Management ---
+
     @app.before_request
     def before_request_hook():
-        # Regenerate session ID *after* login is handled in routes.py
-        # For non-logged in users, this helps defend against session fixation before login.
+        #Regenerate sessionid, from routes.py
         if current_user.is_authenticated and 'session_regenerated' not in session:
-            # We handle this post-login inside the route itself for the final token regeneration
             pass
 
     @app.after_request
     def set_secure_headers(response):
-        # Implement secure cookie flags (Part A)
         if 'session' in session:
-            session.permanent = False  # Default session to non-permanent
-            # Set secure cookie flags
+            session.permanent = False
+            #initialise cookie flags
             response.headers['Set-Cookie'] = f'session={session.sid}; HttpOnly; Secure; SameSite=Lax; Path=/'
 
-        # Content Security Policy (Optional, but good practice)
         response.headers[
             'Content-Security-Policy'] = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'"
 
         return response
 
-    # --- Logging Setup (Part D) ---
     if not app.debug:
         file_handler = RotatingFileHandler(app.config['LOG_FILE'], maxBytes=10240, backupCount=10)
         file_handler.setFormatter(logging.Formatter(

@@ -8,12 +8,11 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class TOTPForm(FlaskForm):
-    # Form for entering the 6-digit TOTP code
+    #form to allow user to enter 6 digit
     totp = StringField('TOTP Code', validators=[DataRequired(), Length(min=6, max=6)])
     submit = SubmitField('Verify')
 
 class CAPTCHAForm(FlaskForm):
-    # A placeholder for a simple text CAPTCHA
-    # In a real-world app, you'd integrate Google reCAPTCHA or hCaptcha
+    #Placeholder for captcha
     captcha_input = StringField('Enter the CAPTCHA text', validators=[DataRequired()])
     submit = SubmitField('Verify CAPTCHA')
